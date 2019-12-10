@@ -7,14 +7,16 @@
 */
 class Route
 {
-
+	static function parsingURI() {
+		return explode('/', $_SERVER['REQUEST_URI']);
+	}
 	static function start()
 	{
 		// контроллер и действие по умолчанию
 		$controller_name = 'Main';
 		$action_name = 'index';
 		
-		$routes = explode('/', $_SERVER['REQUEST_URI']);
+		$routes = Route::parsingURI();
 		
 		
 		// получаем имя контроллера

@@ -10,16 +10,19 @@ class View
 	$template_file - общий для всех страниц шаблон;
 	$data - массив, содержащий элементы контента страницы. Обычно заполняется в модели.
 	*/
+	
 	function generate($content_view, $template_view, $data = null)
 	{
+		$URI = Route::parsingURI();
+		$namePage = $URI[1];
 		
-		/*
+		/*  
 		if(is_array($data)) {
 			
 			// преобразуем элементы массива в переменные
 			extract($data);
-		}
-		*/
+		}  */
+		
 		
 		/*
 		динамически подключаем общий шаблон (вид),

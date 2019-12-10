@@ -12,7 +12,9 @@
 		<div class="container clearfix">
 			<a href="/" class=" text-white float-left"> Task manager</a>
 			<a href="/authorization" type="button" class="btn btn-light float-right mx-1 btn-sm">Login</a>
-			<a href="/add" type="button" class="btn btn-light float-right mx-1 btn-sm ">Add</a>
+			<?php if ($namePage !== 'add' ) : ?>
+				<a href="/add" type="button" class="btn btn-light float-right mx-1 btn-sm ">Add</a>
+			<?php endif; ?>
 		</div>
 	</header>
 	<section class="main">

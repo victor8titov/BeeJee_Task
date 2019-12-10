@@ -7020,7 +7020,14 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
+.add__message {
+  opacity: 0;
+  transition: all 300ms ease-in-out; }
+
 .main {
   min-height: calc(100vh - 119px); }
+
+.o-1 {
+  opacity: 1; }
 
 /*# sourceMappingURL=logfile/main.css.map */

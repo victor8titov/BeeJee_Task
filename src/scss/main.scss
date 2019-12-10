@@ -1,6 +1,6 @@
 @import './libs/bootstrap/bootstrap.scss';
 
-
+@import './Components/add.scss';
 
 html {
     //font-size: 10px;
@@ -12,5 +12,8 @@ body {
 }
 .main {
     min-height: calc(100vh - 119px);
+}
+.o-1 {
+    opacity: 1;
 }
 
