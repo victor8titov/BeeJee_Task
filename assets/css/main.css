@@ -7024,6 +7024,11 @@ a.text-dark:hover, a.text-dark:focus {
   opacity: 0;
   transition: all 300ms ease-in-out; }
 
+.main__tasks {
+  min-height: 350px; }
+  .main__tasks .card-status {
+    font-size: 13px; }
+
 .main {
   min-height: calc(100vh - 119px); }
 

@@ -142,6 +142,8 @@ var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+main();
+
 function main() {
     var filter = document.getElementById('main__filter');
     filter.addEventListener('submit', function (e) {
@@ -162,6 +164,8 @@ function main() {
             status: false,
             admin_create: false
         };
+
+        // запрашиваю задачи с настройками фильтра
         var promise = (0, _index2.default)('/main/tasks/', config);
         promise.then(function (tasks) {
             insertTasks(tasks);
@@ -169,16 +173,136 @@ function main() {
             console.log(ms);
         });
     }
+
     function insertTasks(tasks) {
         var n = document.querySelector('.main__tasks');
-        if (n) n.parentNode.removeChild(n);
+        if (n) {
+            pagination.remove();n.parentNode.removeChild(n);
+        }
+
         document.querySelector('.main__filter').insertAdjacentHTML('afterend', tasks);
+        pagination.add();
     }
 
     requestTasks();
 }
 
-main();
+var pagination = {
+    target: document.querySelector('.main__pagination'),
+    previous: document.getElementById('pagination__previous'),
+    next: document.getElementById('pagination__next'),
+    domTasks: '',
+    domDigitalA: '',
+    currentList: 1,
+    countList: '',
+    add: function add() {
+        this.domTasks = document.querySelectorAll('.main__tasks .card');
+        this.countList = parseInt(this.domTasks.length / 3, 10);
+        if (this.domTasks.length % 3 !== 0) ++this.countList;
+        if (this.countList <= 1) return;
+
+        this.generateDigitLine();
+        this.addEvents();
+        this.target.classList.remove('d-none');
+        this.target.classList.add('d-flex');
+    },
+    remove: function remove() {
+        this.removeEvents();
+        this.removeDigitalLine();
+        this.target.classList.remove('d-flex');
+        this.target.classList.add('d-none');
+        this.currentList = 1;
+    },
+    addEvents: function addEvents() {
+        var _this = this;
+
+        this.EventClickPrevious = this.EventClickPrevious.bind(this);
+        this.EventClickNext = this.EventClickNext.bind(this);
+        this.EventClickDigit = this.EventClickDigit.bind(this);
+
+        this.previous.addEventListener('click', this.EventClickPrevious);
+        this.next.addEventListener('click', this.EventClickNext);
+        this.domDigitalA = document.querySelectorAll('#digit_a').forEach(function (elm) {
+            return elm.addEventListener('click', _this.EventClickDigit);
+        });
+    },
+    removeEvents: function removeEvents() {
+        var _this2 = this;
+
+        console.log(this.next);
+        this.previous.removeEventListener('click', this.EventClickPrevious);
+        this.next.removeEventListener('click', this.EventClickNext);
+        this.domDigitalA = document.querySelectorAll('#digit_a').forEach(function (elm) {
+            return elm.removeEventListener('click', _this2.EventClickDigit);
+        });
+    },
+    generateDigitLine: function generateDigitLine() {
+        for (var i = 1; i <= this.countList; i++) {
+            var li = document.createElement('li');
+            li.className = this.currentList == i ? "page-item active" : "page-item";
+            li.id = "digit_li";
+            var a = document.createElement('a');
+            a.href = "#";
+            a.className = "page-link";
+            a.id = "digit_a";
+            a.innerText = i;
+            li.append(a);
+            document.querySelector('.page-item:last-of-type').insertAdjacentElement('beforebegin', li);
+        }
+    },
+    removeDigitalLine: function removeDigitalLine() {
+        document.querySelectorAll('#digit_li').forEach(function (n) {
+            return n.parentNode.removeChild(n);
+        });
+    },
+    EventClickPrevious: function EventClickPrevious(e) {
+        e.preventDefault();
+        if (this.currentList < 2) return;
+        this.hiddenAllTasks();
+        this.removeActiveClass();
+
+        --this.currentList;
+        this.showCurrentListTasks();
+        this.instActiveClass();
+    },
+    EventClickNext: function EventClickNext(e) {
+        e.preventDefault();
+        if (this.currentList >= this.countList) return;
+        this.hiddenAllTasks();
+        this.removeActiveClass();
+
+        ++this.currentList;
+        this.showCurrentListTasks();
+        this.instActiveClass();
+    },
+    EventClickDigit: function EventClickDigit(e) {
+        e.preventDefault();
+        this.hiddenAllTasks();
+        this.removeActiveClass();
+
+        this.currentList = parseInt(e.target.innerText, 10);
+        this.showCurrentListTasks();
+        this.instActiveClass();
+    },
+    hiddenAllTasks: function hiddenAllTasks() {
+        this.domTasks.forEach(function (elm) {
+            return elm.classList.add('d-none');
+        });
+    },
+    removeActiveClass: function removeActiveClass() {
+        document.querySelectorAll('#digit_li')[this.currentList - 1].classList.remove('active');
+    },
+    instActiveClass: function instActiveClass() {
+        document.querySelectorAll('#digit_li')[this.currentList - 1].classList.add('active');
+    },
+    showCurrentListTasks: function showCurrentListTasks() {
+        var _this3 = this;
+
+        this.domTasks.forEach(function (elm, id) {
+            if (id + 1 >= _this3.currentList * 3 - 2 && id + 1 <= _this3.currentList * 3) elm.classList.remove('d-none');
+        });
+    }
+};
 
 /***/ })
 

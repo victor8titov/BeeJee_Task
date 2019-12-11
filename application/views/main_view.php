@@ -37,15 +37,14 @@
 <nav class="main__pagination col-12 justify-content-center d-none">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" href="#" aria-label="Previous" id="pagination__previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+    
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link" href="#" aria-label="Next" id="pagination__next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
