@@ -7,13 +7,14 @@ function requestToServer(url,data,method = "POST") {
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     //console.log('--:','onreadystatechange',xhr.responseText)
+                    console.log('responce server')
                     resolve(xhr.responseText);
                 } else {
                     if (xhr.readyState === 4) reject(`Запрос завершён с кодом ответа: ${xhr.status}`)
                 } 
 
             };
-            //console.log('--:','send: ', data )
+            console.log('--:','send: ', data )
             xhr.send('data=' + JSON.stringify(data));
         })
         return promise;

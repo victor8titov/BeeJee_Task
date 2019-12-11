@@ -81,72 +81,10 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/addform.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/main_tasks.js");
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ "./src/addform.js":
-/*!************************!*\
-  !*** ./src/addform.js ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _index = __webpack_require__(/*! ./index */ "./src/index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function addForm() {
-    var form = document.getElementById('add__form');
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var data = {
-            name: form.name.value,
-            email: form.email.value,
-            task: form.task.value,
-            status: 'false',
-            admincreate: 'false'
-        };
-        // Отправка формы на сервер 
-        var request = (0, _index2.default)('/addform', data, 'POST');
-        request.then(function (ms) {
-            console.log('good request', ms);
-            DomMessage(ms, null, 'alert-primary');
-            e.target.reset();
-        }, function (ms) {
-            console.log('bad request ', ms);
-            DomMessage('Ошибка при передачи данных на сервер!', ms, 'alert-danger');
-        });
-    });
-
-    var DomMessage = function DomMessage(title) {
-        var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-        var className = arguments[2];
-
-        //console.log(document.querySelector('.add__message'))
-        var block_message = document.querySelector('.add__message');
-
-        block_message.classList.add(className);
-        block_message.classList.add('o-1');
-
-        block_message.querySelector('.add__title').innerHTML = title;
-        if (description !== undefined) block_message.querySelector('.add__description').innerHTML = description;
-
-        setTimeout(function () {
-            block_message.classList.remove('o-1');
-        }, 4000);
-    };
-}
-
-addForm();
-
-/***/ }),
 
 /***/ "./src/index.js":
 /*!**********************!*\
@@ -186,7 +124,25 @@ function requestToServer(url, data) {
 
 exports.default = requestToServer;
 
+/***/ }),
+
+/***/ "./src/main_tasks.js":
+/*!***************************!*\
+  !*** ./src/main_tasks.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _index = __webpack_require__(/*! ./index */ "./src/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /***/ })
 
 /******/ });
-//# sourceMappingURL=addform.js.map
+//# sourceMappingURL=main_tasks.js.map

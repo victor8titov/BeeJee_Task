@@ -81,72 +81,10 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/addform.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/main.js");
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ "./src/addform.js":
-/*!************************!*\
-  !*** ./src/addform.js ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _index = __webpack_require__(/*! ./index */ "./src/index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function addForm() {
-    var form = document.getElementById('add__form');
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var data = {
-            name: form.name.value,
-            email: form.email.value,
-            task: form.task.value,
-            status: 'false',
-            admincreate: 'false'
-        };
-        // Отправка формы на сервер 
-        var request = (0, _index2.default)('/addform', data, 'POST');
-        request.then(function (ms) {
-            console.log('good request', ms);
-            DomMessage(ms, null, 'alert-primary');
-            e.target.reset();
-        }, function (ms) {
-            console.log('bad request ', ms);
-            DomMessage('Ошибка при передачи данных на сервер!', ms, 'alert-danger');
-        });
-    });
-
-    var DomMessage = function DomMessage(title) {
-        var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-        var className = arguments[2];
-
-        //console.log(document.querySelector('.add__message'))
-        var block_message = document.querySelector('.add__message');
-
-        block_message.classList.add(className);
-        block_message.classList.add('o-1');
-
-        block_message.querySelector('.add__title').innerHTML = title;
-        if (description !== undefined) block_message.querySelector('.add__description').innerHTML = description;
-
-        setTimeout(function () {
-            block_message.classList.remove('o-1');
-        }, 4000);
-    };
-}
-
-addForm();
-
-/***/ }),
 
 /***/ "./src/index.js":
 /*!**********************!*\
@@ -186,7 +124,63 @@ function requestToServer(url, data) {
 
 exports.default = requestToServer;
 
+/***/ }),
+
+/***/ "./src/main.js":
+/*!*********************!*\
+  !*** ./src/main.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _index = __webpack_require__(/*! ./index */ "./src/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function main() {
+    var filter = document.getElementById('main__filter');
+    filter.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var config = {
+            type: filter.type.value,
+            direction: filter.direction.value,
+            status: filter.status.checked,
+            admin_create: filter.admin_create.checked
+        };
+        requestTasks(config);
+    });
+
+    function requestTasks(config) {
+        config = config || {
+            type: 'undefined',
+            direction: 'on_increase',
+            status: false,
+            admin_create: false
+        };
+        var promise = (0, _index2.default)('/main/tasks/', config);
+        promise.then(function (tasks) {
+            insertTasks(tasks);
+        }, function (ms) {
+            console.log(ms);
+        });
+    }
+    function insertTasks(tasks) {
+        var n = document.querySelector('.main__tasks');
+        if (n) n.parentNode.removeChild(n);
+        document.querySelector('.main__filter').insertAdjacentHTML('afterend', tasks);
+    }
+
+    requestTasks();
+}
+
+main();
+
 /***/ })
 
 /******/ });
-//# sourceMappingURL=addform.js.map
+//# sourceMappingURL=main.js.map

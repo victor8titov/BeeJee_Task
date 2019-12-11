@@ -3,7 +3,9 @@ const NODE_ENV = process.env.NODE_ENV || "dev";
 
 module.exports = {
     entry: {
-        addform: "./src/addform"
+        addform: "./src/addform",
+        main: "./src/main",
+        main_tasks: "./src/main_tasks",
     },
     output: {
         path: __dirname + '/assets/js',

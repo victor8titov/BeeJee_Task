@@ -8,10 +8,12 @@ class Controller_Main extends Controller
     }
 
 	function action_index()
-	{	$data=$this->model->get_data();
-		$this->view->generate('main_view.php', 'template_view.php',$data);
+	{	
+		$this->view->generate('main_view.php', 'template_view.php');
 	}
-	function action_addline() {
-		echo 'action_add';
+	function action_tasks() {
+		
+		$data=$this->model->get_data();
+		$this->view->generate(null, 'tasks_view.php',$data);
 	}
 }

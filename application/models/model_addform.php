@@ -7,7 +7,8 @@ class Model_Addform extends Model
 	}
 	public function set_data() {
 		
-		$data = json_decode($_POST['data'],true);
+		$data = $this->get_POST_data();
+
 		$str = "[". $this->random() ."]\n" .
 				"name=" . $data['name'] . "\n".
 				"email=".$data['email']."\n".

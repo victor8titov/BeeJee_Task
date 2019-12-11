@@ -18,7 +18,7 @@
 		</div>
 	</header>
 	<section class="main">
-		<div class="container ">
+		<div class="container main__container">
 			<?php include 'application/views/'.$content_view; ?>
 		</div>
 		

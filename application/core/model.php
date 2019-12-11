@@ -56,4 +56,7 @@ class Model
 		}
 		return $rand;
 	}
+	protected function get_POST_data() {
+		return json_decode($_POST['data'],true);
+	}
 }

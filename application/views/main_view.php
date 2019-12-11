@@ -4,28 +4,28 @@
                 <h5>Фильтр задач:</h5>
         </div>
         <div class="col-2">
-            <select class="form-control form-control-sm" id="inputGroupSelect01">
-                <option value="none">Тип </option>
+            <select class="form-control form-control-sm" id="type" name="type">
+                <option value="undefined">Тип </option>
                 <option value="name">Имя</option>
                 <option value="email">Email</option>
             </select>
         </div>
         <div class="col-3">        
-            <select class="form-control form-control-sm" id="inputGroupSelect01">
-                <option value="none">Направление</option>
-                <option value="name">по возрастанию</option>
-                <option value="email">по убыванию</option>
+            <select class="form-control form-control-sm" id="direction" name="direction">
+                <option value="on_increase">Направление</option>
+                <option value="on_increase">по возрастанию</option>
+                <option value="on_decrease">по убыванию</option>
             </select>
         </div>
         <div class="col-2 custom-control custom-checkbox">
-            <input class="custom-control-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="custom-control-label" for="defaultCheck1">
+            <input class="custom-control-input" type="checkbox" value="" id="status" name="status">
+            <label class="custom-control-label" for="status">
             Выполнено
             </label>
         </div>
         <div class="col-3 custom-control custom-checkbox">
-            <input class="custom-control-input" type="checkbox" value="" id="defaultCheck2">
-            <label class="custom-control-label" for="defaultCheck2">
+            <input class="custom-control-input" type="checkbox" value="" id="admin_create" name="admin_create">
+            <label class="custom-control-label" for="admin_create">
             Отредактировано администратором
             </label>
         </div>
@@ -34,28 +34,7 @@
         </div>  
     </div>
 </form>
-
-<section class="main__cards col-12 d-flex flex-wrap align-items-start justify-content-center my-3">
-    <?php if ( count($data) !== 0 ):  ?>
-        <?php foreach( $data as $value) : ?>
-            <div class="card mx-2" style="width: 230px">
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $value['name']; ?></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo $value['email']; ?></h6>
-                <p class="card-text"><?php echo $value['task']; ?></p>
-                <hr>
-                <p ><span class="font-weight-bold ">Статус: </span><?php echo $value['status'] ? 'Выполнено' : 'Не выполнено'; ?></p>
-                <?php echo $value['admin_create'] ? '<p class="font-italic">Отредактировано администратором </p>' : ''; ?>
-            </div>
-            </div>
-        <?php endforeach; ?>
-    
-    <? else: ?>
-        <h3>Список задач пуст</h3>
-    <? endif; ?>
-
-</section>
-<nav class="main__pagination col-12 d-flex justify-content-center">
+<nav class="main__pagination col-12 justify-content-center d-none">
   <ul class="pagination">
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Previous">
@@ -72,3 +51,4 @@
     </li>
   </ul>
 </nav>
+<script src="assets/js/main.js" defer></script>
