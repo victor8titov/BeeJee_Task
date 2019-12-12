@@ -8,7 +8,7 @@ class Model_Main extends Model
 	public function get_data()
 	{
         $filter_config = $this->get_POST_data();
-        $tasks = $this->read_file();
+        $tasks = $this->read();
         $tasks = $this->filtration_of_task($tasks, $filter_config);
         return $tasks;
     }
@@ -36,13 +36,13 @@ class Model_Main extends Model
         // галочка выполнено
         if ($config['status']) 
             $tasks = array_filter($tasks, function($task) {
-                return $task['status'] || $task['status'] === 'true';
+                return $task['status'] === 'true';
             });
 
         // галочка отредактированно администратором
         if ($config['admin_create']) 
             $tasks = array_filter($tasks, function($task) {
-                return $task['admin_create'] || $task['admin_create'] === 'true';
+                return  $task['admin_create'] === 'true';
             });
 
         return $tasks;    

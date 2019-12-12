@@ -6,17 +6,15 @@ class Model_Addform extends Model
 		parent::__construct($file);
 	}
 	public function set_data() {
-		
 		$data = $this->get_POST_data();
-
-		$str = "[". $this->random() ."]\n" .
-				"name=" . $data['name'] . "\n".
-				"email=".$data['email']."\n".
-				"task=".$data['task']."\n" .
-				"status=".$data['status']."\n".
-				"admin_create=".$data['admincreate']."\n \n";
-
-        $this->write_file($str);
+		$section = [
+			"name" 			=>$data['name'],
+			"email"			=>$data['email'],
+			"task"			=>$data['task'],
+			"status"		=>$data['status'],
+			"admin_create"	=>$data['admincreate'],
+		];
+        $this->write($section);
 	}
 	
 	

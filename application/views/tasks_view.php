@@ -3,15 +3,15 @@
     <?php if ( count($data) !== 0 ):  
       $count = 1;
       ?>
-        <?php foreach( $data as $key=>$value) : ?>
-            <div class="card m-2 <? if ($count > 3 ) echo "d-none"; ?>" style="width: 200px" id="<? echo $key?>">
+        <?php foreach( $data as $value) : ?>
+            <div class="card m-2 <? if ($count > 3 ) echo "d-none"; ?>" style="width: 200px" id="<? echo $value['id']; ?>">
             <div class="card-body">
                 <h5 class="card-title"><?php echo $value['name']; ?></h5>
                 <h6 class="card-subtitle mb-2 text-muted"><?php echo $value['email']; ?></h6>
                 <p class="card-text"><?php echo $value['task']; ?></p>
                 <hr>
-                <p class="card-status"><span class="font-weight-bold ">Статус: </span><?php echo $value['status'] ? 'Выполнено' : 'Не выполнено'; ?></p>
-                <?php echo $value['admin_create'] ? '<p class="font-italic">Отредактировано администратором </p>' : ''; ?>
+                <p class="card-status"><span class="font-weight-bold ">Статус: </span><?php echo $value['status'] === 'true' ? 'Выполнено' : 'Не выполнено'; ?></p>
+                <?php echo $value['admin_create']==='true' ? '<p class="font-italic">Отредактировано администратором </p>' : ''; ?>
             </div>
             </div>
 		<?php 
