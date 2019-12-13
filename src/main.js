@@ -24,6 +24,7 @@ function main() {
                             };
         
         // запрашиваю задачи с настройками фильтра
+        console.log('запрашиваем main/tasks')
         const promise = requestToServer('/main/tasks/',config);
         promise.then(
             (tasks)=>{
@@ -41,11 +42,11 @@ function main() {
         
         document.querySelector('.main__filter').insertAdjacentHTML('afterend',tasks);
         pagination.add();
+        admin();
     }
 
     requestTasks();
 }
-
 
 const pagination =  {
     target: document.querySelector('.main__pagination'),
@@ -162,3 +163,27 @@ const pagination =  {
     }
 }
 
+function admin () {
+    if (!flagAdmin) return;
+    const buffer={};
+
+    const callbacks = {
+       
+        clickTask: (e)=>{
+            
+        },
+        clickCheckbox: (e)=>{},
+        saveToServer: (e)=>{},
+        cancelSaveToServer: (e)=>{},
+        save: (e)=>{},
+        cancel: (e)=>{},
+    }
+
+    const tasks = document.querySelectorAll('.task');
+    tasks.forEach((elm)=>{
+        elm.classList.add('create');
+        elm.addEventListener('click',callbacks.clickTask);
+    });
+
+
+}

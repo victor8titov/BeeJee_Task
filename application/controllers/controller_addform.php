@@ -10,6 +10,6 @@ class Controller_Addform extends Controller
 	{
         
         $set_flag = $this->model->set_data();
-        $this->view->generate(null, 'addform_view.php',$set_flag);
+        $this->view->generate_part('addform_view.php',$set_flag);
 	}
 }

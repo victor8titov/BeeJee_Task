@@ -170,6 +170,7 @@ function main() {
         };
 
         // запрашиваю задачи с настройками фильтра
+        console.log('запрашиваем main/tasks');
         var promise = (0, _index2.default)('/main/tasks/', config);
         promise.then(function (tasks) {
             insertTasks(tasks);
@@ -186,6 +187,7 @@ function main() {
 
         document.querySelector('.main__filter').insertAdjacentHTML('afterend', tasks);
         pagination.add();
+        admin();
     }
 
     requestTasks();
@@ -307,6 +309,27 @@ var pagination = {
         });
     }
 };
+
+function admin() {
+    if (!flagAdmin) return;
+    var buffer = {};
+
+    var callbacks = {
+
+        clickTask: function clickTask(e) {},
+        clickCheckbox: function clickCheckbox(e) {},
+        saveToServer: function saveToServer(e) {},
+        cancelSaveToServer: function cancelSaveToServer(e) {},
+        save: function save(e) {},
+        cancel: function cancel(e) {}
+    };
+
+    var tasks = document.querySelectorAll('.task');
+    tasks.forEach(function (elm) {
+        elm.classList.add('create');
+        elm.addEventListener('click', callbacks.clickTask);
+    });
+}
 
 /***/ })
 

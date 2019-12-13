@@ -4,13 +4,13 @@
       $count = 1;
       ?>
         <?php foreach( $data as $value) : ?>
-            <div class="card m-2 <? if ($count > 3 ) echo "d-none"; ?>" style="width: 200px" id="<? echo $value['id']; ?>">
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $value['name']; ?></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><?php echo $value['email']; ?></h6>
-                <p class="card-text"><?php echo $value['task']; ?></p>
+            <div class="task card m-2 <? if ($count > 3 ) echo "d-none"; ?>" style="width: 200px" id="<? echo $value['id']; ?>">
+            <div class="card-body ">
+                <h5 class="card-title task__name"><?php echo $value['name']; ?></h5>
+                <h6 class="card-subtitle mb-2 text-muted task__email"><?php echo $value['email']; ?></h6>
+                <p class="card-text task__task" ><?php echo $value['task']; ?></p>
                 <hr>
-                <p class="card-status"><span class="font-weight-bold ">Статус: </span><?php echo $value['status'] === 'true' ? 'Выполнено' : 'Не выполнено'; ?></p>
+                <p class="card-status task__status"><span class="font-weight-bold ">Статус: </span><?php echo $value['status'] === 'true' ? 'Выполнено' : 'Не выполнено'; ?></p>
                 <?php echo $value['admin_create']==='true' ? '<p class="font-italic">Отредактировано администратором </p>' : ''; ?>
             </div>
             </div>

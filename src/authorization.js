@@ -1,4 +1,5 @@
-import requestToServer from './index';
+import  requestToServer from './index';
+
 
 function authorization() {
     const form = document.getElementById('authorization__form');
@@ -12,12 +13,15 @@ function authorization() {
         const request = requestToServer('/authorization/enter/',data,'POST');
         request.then(
             (ms)=>{
-                console.log('login!',ms)
-                DomMessage_authorization(ms,null,'alert-primary');
-                e.target.reset();
+                if (ms) {
+                    console.log(ms)
+                    DomMessage_authorization('Ошибка авторизации',ms,'alert-danger');
+                    return;
+                }
+                window.location.href="/";
             },
             (ms)=>{
-                console.log('bad', ms)
+                console.log(ms)
                 DomMessage_authorization('Ошибка при передачи данных на сервер!',ms,'alert-danger');
             }
         )
@@ -26,7 +30,6 @@ function authorization() {
 
 
     const DomMessage_authorization = (title,description=undefined,className) => {
-        //console.log(document.querySelector('.add__message'))
         const block_message = document.querySelector('.authorization__message');
         
         block_message.classList.add(className);
@@ -43,4 +46,4 @@ function authorization() {
 }
 
 
-    authorization();
+authorization();

@@ -113,11 +113,14 @@ function authorization() {
         // Отправка формы на сервер 
         var request = (0, _index2.default)('/authorization/enter/', data, 'POST');
         request.then(function (ms) {
-            console.log('login!', ms);
-            DomMessage_authorization(ms, null, 'alert-primary');
-            e.target.reset();
+            if (ms) {
+                console.log(ms);
+                DomMessage_authorization('Ошибка авторизации', ms, 'alert-danger');
+                return;
+            }
+            window.location.href = "/";
         }, function (ms) {
-            console.log('bad', ms);
+            console.log(ms);
             DomMessage_authorization('Ошибка при передачи данных на сервер!', ms, 'alert-danger');
         });
     });
@@ -126,7 +129,6 @@ function authorization() {
         var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
         var className = arguments[2];
 
-        //console.log(document.querySelector('.add__message'))
         var block_message = document.querySelector('.authorization__message');
 
         block_message.classList.add(className);

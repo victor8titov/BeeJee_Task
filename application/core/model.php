@@ -35,7 +35,6 @@ class Model
 			
 			//иначе добавляются cookie с логином и паролем, чтобы после перезапуска браузера сессия не слетала         
 			else {           
-				//$rez = mysql_query("SELECT * FROM users WHERE id='{$_SESSION['id']}'"); 
 				//запрашивается строка с искомым id             
 				$rez = $this->read(USERS,'id',$_SESSION['id']);
 
@@ -61,7 +60,6 @@ class Model
 		else {       
 			//если куки существуют      
 			if(isset($_COOKIE['login']) && isset($_COOKIE['password'])) {           
-				//$rez = mysql_query("SELECT * FROM users WHERE login='{$_COOKIE['login']}'"); 
 
 				//запрашивается строка с искомым логином и паролем             
 				$rez = $this->read(USERS,'login',$_COOKIE['login']);
@@ -100,7 +98,7 @@ class Model
 			$password = $_POST['password'];
 
 			$rez = $this->read(USERS,'login',$login);
-			//$rez = mysql_query("SELECT * FROM users WHERE login=$login"); //запрашивается строка из базы данных с логином, введённым пользователем      
+			//запрашивается строка из базы данных с логином, введённым пользователем      
 
 			//если нашлась одна строка, значит такой юзер существует в базе данных       
 			if (count($rez) == 1) {           
@@ -123,14 +121,14 @@ class Model
 
 				//если пароли не совпали           
 				else {               
-					$error[] = "Неверный пароль";                                       
+					$error[] = "Неверный логин или пароль";                                       
 					return $error;          
 				}       
 			}
 
 			//если такого пользователя не найдено в базе данных       
 			else  {           
-				$error[] = "Неверный логин и пароль";           
+				$error[] = "Неверный логин или пароль";           
 				return $error;      
 			}   
 		}   
@@ -160,16 +158,13 @@ class Model
 		
 		if ( isset($id) ) {
 			//обнуляется поле online, говорящее, что пользователь вышел с сайта (пригодится в будущем)     
-			$this->write(USERS,['online',0],'id',$id); 
-			//mysql_query("UPDATE users SET online=0 WHERE id='$id'"); 
+			$this->write(USERS,['online'=>'0'],'id',$id); 
 		
 			unset($_SESSION['id']); //удалятся переменная сессии    
 		
 			SetCookie("login", ""); //удаляются cookie с логином    
 		
 			SetCookie("password", ""); //удаляются cookie с паролем     
-			ms('logout');
-			//header('Location: http://'.$_SERVER['HTTP_HOST'].'/'); //перенаправление на главную страницу сайта 
 		}
 	}
 
@@ -177,6 +172,7 @@ class Model
 	protected function lastAct($id) {
 		$tm = time();   $this->write(USERS,['online'=>$tm, 'last_act'=>$tm],'id',$id); 
 	}
+
 	protected function write($file,$write_data,$key=null,$value=null) {
 		if ( isset( $key ) && isset( $value ) && is_array( $write_data ) ) {
 			// ищу в файле секции с парой $key=$value

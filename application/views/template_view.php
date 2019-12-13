@@ -6,14 +6,26 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<title>Tasks BeeJee</title>
+	<script>
+		var flagAdmin=<?php echo isset( $data['login'] ) && $data['login']? "true" : "false";  ?>;
+	</script>
 </head>
 <body class="bg-light">
 	<header class="header p-3  bg-secondary text-white">
 		<div class="container clearfix">
+			
 			<a href="/" class=" text-white float-left"> Task manager</a>
+			
+			
 			<?php if ($namePage === '' || $namePage === 'add'): ?>
-			<a href="/authorization" type="button" class="btn btn-light float-right mx-1 btn-sm">Login</a>
+				<?php if ( isset( $data['login'] ) && $data['login'] ): ?>
+					<a href="/main/out" type="button" class="btn btn-light float-right mx-1 btn-sm">Logout</a>
+				<? else: ?>
+					<a href="/authorization" type="button" class="btn btn-light float-right mx-1 btn-sm">Login</a>
+				<? endif; ?>
 			<?php endif; ?>
+			
+			
 			<?php if ($namePage === '' ) : ?>
 				<a href="/add" type="button" class="btn btn-light float-right mx-1 btn-sm ">Add</a>
 			<?php endif; ?>

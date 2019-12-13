@@ -1,4 +1,4 @@
-
+<?php if ( !isset( $data['error']) ): ?>
 <form class="w-25 mx-auto pt-5 authorization__form" method="POST" action="/authorization/enter/" id="authorization__form" >
     <div class="form-group">
         <label for="authorization__login" class=" col-form-label">Login:</label>
@@ -19,3 +19,8 @@
   <a href="/" type="button" class="btn btn-light mx-1 btn-sm">Вернуться к заметкам</a>
 </div>
 <script src="assets/js/authorization.js" defer></script>
+<? else: ?>
+<? foreach( $data['error'] as $message) {
+    echo "<p>$message</p>";
+} ?>
+<? endif; ?>

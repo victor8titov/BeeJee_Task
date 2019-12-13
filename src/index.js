@@ -24,6 +24,5 @@ function requestToServer(url,data,method = "POST") {
         return promise;
     }
 
-
 export default requestToServer;
 

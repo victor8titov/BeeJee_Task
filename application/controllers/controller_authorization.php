@@ -12,18 +12,11 @@ class Controller_Authorization extends Controller
 		$this->view->generate('authorization_view.php', 'template_view.php');
 	}
 	function action_enter() {
-		$m = $this->model->enter();
-		
-		/* //header('Location: http://'.$_SERVER['HTTP_HOST'].'/'); //перенаправление на главную страницу сайта
-		
 		$error = $this->model->enter();
-         if (count($error) == 0) //если ошибки отсутствуют, авторизируем пользователя
-        {
-			
-			//$this->view->generate(null, 'tasks_view.php',$data);
-			 
-        }  */
-		
+
+		//если ошибки есть отдать их пользователю
+		if (count($error) !== 0) {
+			$this->view->generate_part('authorization_view.php',['error'=>$error]);
+		}
 	}
-	
 }
