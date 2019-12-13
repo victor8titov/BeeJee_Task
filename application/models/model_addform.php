@@ -2,21 +2,24 @@
 
 class Model_Addform extends Model
 {
-	public function __construct($file) {
-		parent::__construct($file);
-	}
 	public function set_data() {
-		$data = $this->get_POST_data();
-		$section = [
-			"name" 			=>$data['name'],
-			"email"			=>$data['email'],
-			"task"			=>$data['task'],
-			"status"		=>$data['status'],
-			"admin_create"	=>$data['admincreate'],
-		];
-        $this->write($section);
-	}
-	
-	
+		if ( 	isset( $_POST['name'] ) && 
+				isset( $_POST['email'] ) && 
+				isset( $_POST['task'] ) && 
+				isset( $_POST['status'] ) &&
+				isset( $_POST['admincreate'] ) ) {
 
+			$section = [
+				"name" 			=>$_POST['name'],
+				"email"			=>$_POST['email'],
+				"task"			=>$_POST['task'],
+				"status"		=>$_POST['status'],
+				"admin_create"	=>$_POST['admincreate'],
+				"id"			=>$this->random()
+			];
+			$w = $this->write(DATA,$section);
+			if ($w) return true;
+		}
+		return false;
+	}
 }

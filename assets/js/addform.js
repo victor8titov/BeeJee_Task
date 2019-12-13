@@ -171,15 +171,19 @@ function requestToServer(url, data) {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                //console.log('--:','onreadystatechange',xhr.responseText)
-                console.log('responce server');
+                console.log('server 200');
                 resolve(xhr.responseText);
             } else {
                 if (xhr.readyState === 4) reject('\u0417\u0430\u043F\u0440\u043E\u0441 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043D \u0441 \u043A\u043E\u0434\u043E\u043C \u043E\u0442\u0432\u0435\u0442\u0430: ' + xhr.status);
             }
         };
         console.log('--:', 'send: ', data);
-        xhr.send('data=' + JSON.stringify(data));
+        var s = "";
+        for (var key in data) {
+            s += key + '=' + data[key] + '&';
+        }
+        s = s.slice(0, -1);
+        xhr.send(s);
     });
     return promise;
 }

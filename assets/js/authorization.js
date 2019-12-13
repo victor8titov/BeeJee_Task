@@ -81,10 +81,69 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/main_tasks.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/authorization.js");
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./src/authorization.js":
+/*!******************************!*\
+  !*** ./src/authorization.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _index = __webpack_require__(/*! ./index */ "./src/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function authorization() {
+    var form = document.getElementById('authorization__form');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = {
+            login: form.authorization__login.value,
+            password: form.authorization__password.value
+        };
+        // Отправка формы на сервер 
+        var request = (0, _index2.default)('/authorization/enter/', data, 'POST');
+        request.then(function (ms) {
+            console.log('login!', ms);
+            DomMessage_authorization(ms, null, 'alert-primary');
+            e.target.reset();
+        }, function (ms) {
+            console.log('bad', ms);
+            DomMessage_authorization('Ошибка при передачи данных на сервер!', ms, 'alert-danger');
+        });
+    });
+
+    var DomMessage_authorization = function DomMessage_authorization(title) {
+        var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+        var className = arguments[2];
+
+        //console.log(document.querySelector('.add__message'))
+        var block_message = document.querySelector('.authorization__message');
+
+        block_message.classList.add(className);
+        block_message.classList.add('o-1');
+
+        block_message.querySelector('.authorization__title').innerHTML = title;
+        if (description !== undefined) block_message.querySelector('.authorization__description').innerHTML = description;
+
+        setTimeout(function () {
+            block_message.classList.remove('o-1');
+        }, 4000);
+    };
+}
+
+authorization();
+
+/***/ }),
 
 /***/ "./src/index.js":
 /*!**********************!*\
@@ -109,40 +168,26 @@ function requestToServer(url, data) {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                //console.log('--:','onreadystatechange',xhr.responseText)
-                console.log('responce server');
+                console.log('server 200');
                 resolve(xhr.responseText);
             } else {
                 if (xhr.readyState === 4) reject('\u0417\u0430\u043F\u0440\u043E\u0441 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043D \u0441 \u043A\u043E\u0434\u043E\u043C \u043E\u0442\u0432\u0435\u0442\u0430: ' + xhr.status);
             }
         };
         console.log('--:', 'send: ', data);
-        xhr.send('data=' + JSON.stringify(data));
+        var s = "";
+        for (var key in data) {
+            s += key + '=' + data[key] + '&';
+        }
+        s = s.slice(0, -1);
+        xhr.send(s);
     });
     return promise;
 }
 
 exports.default = requestToServer;
 
-/***/ }),
-
-/***/ "./src/main_tasks.js":
-/*!***************************!*\
-  !*** ./src/main_tasks.js ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _index = __webpack_require__(/*! ./index */ "./src/index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main_tasks.js.map
+//# sourceMappingURL=authorization.js.map

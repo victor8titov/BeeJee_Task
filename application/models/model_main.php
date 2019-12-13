@@ -2,18 +2,22 @@
 
 class Model_Main extends Model
 {
-	public function __construct($file) {
-		parent::__construct($file);
-	}
+	
 	public function get_data()
 	{
-        $filter_config = $this->get_POST_data();
-        $tasks = $this->read();
+
+        $tasks = $this->read(DATA);
         $tasks = $this->filtration_of_task($tasks, $filter_config);
         return $tasks;
     }
-    protected function filtration_of_task($tasks, $config) {
-        
+    protected function filtration_of_task($tasks) {
+        $config = [
+            'type'=>        isset( $_POST['type'] ) ? $_POST['type'] : 'undefined',
+            'direction'=>   isset( $_POST['direction'] ) ? $_POST['direction'] : 'on_increase',
+            'status'=>      isset( $_POST['status'] ) ? $_POST['status'] : 'false',
+            'admin_create'=>isset( $_POST['admin_create'] ) ? $_POST['admin_create'] : 'false'
+        ];
+
         // сортировка по имени
         if ($config['type'] === 'name') {
             uasort($tasks, function($a,$b){
@@ -34,13 +38,13 @@ class Model_Main extends Model
         }
 
         // галочка выполнено
-        if ($config['status']) 
+        if ($config['status']==='true') 
             $tasks = array_filter($tasks, function($task) {
                 return $task['status'] === 'true';
             });
 
         // галочка отредактированно администратором
-        if ($config['admin_create']) 
+        if ($config['admin_create']==='true') 
             $tasks = array_filter($tasks, function($task) {
                 return  $task['admin_create'] === 'true';
             });

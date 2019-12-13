@@ -5,7 +5,7 @@ module.exports = {
     entry: {
         addform: "./src/addform",
         main: "./src/main",
-        main_tasks: "./src/main_tasks",
+        authorization: "./src/authorization",
     },
     output: {
         path: __dirname + '/assets/js',
