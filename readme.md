@@ -1,9 +1,6 @@
 # Тестовое задание для  [BeeJee](https://beejee.ru/)
-<<<<<<< HEAD
-[Demo](http://www.victor8titov.ml/beejee/)
-=======
 
->>>>>>> 5f22b8206b59bcf48ba2f80d8c8568300670dffb
+[Demo](http://www.victor8titov.ml/beejee/)
 
 Необходимо создать приложение-задачник.
 Задачи состоят из:
