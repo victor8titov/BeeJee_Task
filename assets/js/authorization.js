@@ -96,9 +96,9 @@
 "use strict";
 
 
-var _index = __webpack_require__(/*! ./index */ "./src/index.js");
+var _requestToServer = __webpack_require__(/*! ./functions/requestToServer */ "./src/functions/requestToServer.js");
 
-var _index2 = _interopRequireDefault(_index);
+var _requestToServer2 = _interopRequireDefault(_requestToServer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -111,7 +111,7 @@ function authorization() {
             password: form.authorization__password.value
         };
         // Отправка формы на сервер 
-        var request = (0, _index2.default)('/authorization/enter/', data, 'POST');
+        var request = (0, _requestToServer2.default)('/authorization/enter/', data, 'POST');
         request.then(function (ms) {
             if (ms) {
                 console.log(ms);
@@ -147,10 +147,10 @@ authorization();
 
 /***/ }),
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/***/ "./src/functions/requestToServer.js":
+/*!******************************************!*\
+  !*** ./src/functions/requestToServer.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -163,6 +163,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function requestToServer(url, data) {
     var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "POST";
+    var json = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
     var promise = new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest();
@@ -178,10 +179,14 @@ function requestToServer(url, data) {
         };
         console.log('--:', 'send: ', data);
         var s = "";
-        for (var key in data) {
-            s += key + '=' + data[key] + '&';
+        if (!json) {
+            for (var key in data) {
+                s += key + '=' + data[key] + '&';
+            }
+            s = s.slice(0, -1);
+        } else {
+            s += 'data=' + JSON.stringify(data);
         }
-        s = s.slice(0, -1);
         xhr.send(s);
     });
     return promise;

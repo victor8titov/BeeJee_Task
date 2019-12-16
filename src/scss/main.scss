@@ -2,6 +2,7 @@
 
 @import './Components/authorization';
 @import './Components/add.scss';
+@import './Components/admin-menu';
 @import './Components/task.scss';
 @import './Components/main';
 
@@ -18,5 +19,31 @@ body {
 }
 .o-1 {
     opacity: 1;
+}
+.delete {
+    position: relative;
+    
+    &:after {
+        position: absolute;
+        content: "Delete";
+        top: 41%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        
+    }
+    &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        content: '';
+        background: rgba(253, 198, 198,0.9);
+        color: black;
+        text-align: center;
+    }
+
 }
 

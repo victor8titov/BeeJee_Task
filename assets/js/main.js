@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/***/ "./src/functions/admin.js":
+/*!********************************!*\
+  !*** ./src/functions/admin.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -100,98 +100,201 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-function requestToServer(url, data) {
-    var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "POST";
+var _requestToServer = __webpack_require__(/*! ./requestToServer */ "./src/functions/requestToServer.js");
 
-    var promise = new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('server 200');
-                resolve(xhr.responseText);
-            } else {
-                if (xhr.readyState === 4) reject('\u0417\u0430\u043F\u0440\u043E\u0441 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043D \u0441 \u043A\u043E\u0434\u043E\u043C \u043E\u0442\u0432\u0435\u0442\u0430: ' + xhr.status);
-            }
+var _requestToServer2 = _interopRequireDefault(_requestToServer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var admin = {
+    buffer: undefined,
+    currentTask: undefined,
+    add: function add() {
+        var _this = this;
+
+        if (!flagAdmin) return;
+        if (!this.card.target) this.init();
+        this.cleaningBuffer();
+
+        document.querySelectorAll('.task').forEach(function (elm) {
+            return elm.addEventListener('click', _this.EventClickTask);
+        });
+    },
+    // end add();
+    remove: function remove() {
+        var _this2 = this;
+
+        document.querySelectorAll('.task').forEach(function (elm) {
+            return elm.removeEventListener('click', _this2.EventClickTask);
+        });
+        this.hiddenAdminMenu();
+    },
+    init: function init() {
+        this.card.init();
+        this.addEvents();
+    },
+    showAdminMenu: function showAdminMenu() {
+        var classList = document.querySelector('.admin-menu').classList;
+        classList.remove('d-none');
+        classList.add('d-flex');
+    },
+    hiddenAdminMenu: function hiddenAdminMenu() {
+        var classList = document.querySelector('.admin-menu').classList;
+        classList.remove('d-flex');
+        classList.add('d-none');
+    },
+    addEvents: function addEvents() {
+        var _this3 = this;
+
+        this.EventClickTask = this.EventClickTask.bind(this);
+        this.EventCancel = this.EventCancel.bind(this);
+        this.EventSave = this.EventSave.bind(this);
+        this.EventChange = this.EventChange.bind(this);
+        this.EventDeleteTask = this.EventDeleteTask.bind(this);
+        this.EventSaveToServer = this.EventSaveToServer.bind(this);
+        //this.EventCancelSaveToServer = this.EventCancelSaveToServer.bind(this);
+
+        this.card.target.querySelector('#create-task__button-cancel').addEventListener('click', this.EventCancel);
+        this.card.target.querySelector('#create-task__button-save').addEventListener('click', this.EventSave);
+        this.card.target.querySelector('#create-task__button-delete').addEventListener('click', this.EventDeleteTask);
+        this.card.target.querySelectorAll('#create-task__name, #create-task__email, #create-task__task, #create-task__status').forEach(function (e) {
+            return e.addEventListener('change', _this3.EventChange);
+        });
+
+        document.querySelector('#admin-menu__button-save').addEventListener('click', this.EventSaveToServer);
+        document.querySelector('#admin-menu__button-cancel').addEventListener('click', this.EventCancelSaveToServer);
+    },
+    EventClickTask: function EventClickTask(e) {
+        this.currentTask = e.currentTarget;
+        var regExp = /Выполнено/;
+        var data = {
+            name: this.currentTask.querySelector('.task__name').innerText,
+            email: this.currentTask.querySelector('.task__email').innerText,
+            task: this.currentTask.querySelector('.task__task').innerText,
+            status: regExp.test(this.currentTask.querySelector('.task__status').innerText),
+            id: this.currentTask.id,
+            admin_create: undefined
         };
-        console.log('--:', 'send: ', data);
-        var s = "";
-        for (var key in data) {
-            s += key + '=' + data[key] + '&';
-        }
-        s = s.slice(0, -1);
-        xhr.send(s);
-    });
-    return promise;
-}
+        this.card.show(data);
+    },
+    EventSaveToServer: function EventSaveToServer(e) {
+        var _this4 = this;
 
-exports.default = requestToServer;
+        var promise = (0, _requestToServer2.default)('/main/savetoserver/', this.buffer, 'post', true);
+        promise.then(function (tasks) {
+            _this4.insertTasks(tasks);
+        }, function (ms) {
+            console.log(ms);
+        });
+    },
+    EventCancelSaveToServer: function EventCancelSaveToServer(e) {},
+    EventSave: function EventSave(e) {
+        var id = this.card.cardData.id;
+        var cardData = this.card.cardData;
+        var inputData = this.card.inputData;
+
+        for (var prop in cardData) {
+            if (prop === 'id') continue;
+
+            if (inputData[prop] !== cardData[prop]) {
+                if (!this.buffer.hasOwnProperty(id)) this.buffer[id] = {};
+                this.buffer[id][prop] = cardData[prop];
+
+                if (prop === 'name' || prop === 'email' || prop === 'task') {
+                    var selector = '.task__' + prop;
+                    this.currentTask.querySelector(selector).innerText = cardData[prop];
+                }
+
+                if (prop === 'status') {
+
+                    var ms = cardData[prop] ? 'Выполнено' : 'Не выполнено';
+                    this.currentTask.querySelector('.task__status').innerHTML = '<span class="font-weight-bold ">\u0421\u0442\u0430\u0442\u0443\u0441: </span>' + ms + '</p>';
+                }
+
+                this.buffer[id].admin_create = true;
+            }
+        }
+        this.card.hidden();
+    },
+    EventCancel: function EventCancel(e) {
+        this.card.hidden();
+    },
+    EventDeleteTask: function EventDeleteTask(e) {
+        var id = this.card.cardData.id;
+        if (!this.buffer.hasOwnProperty(id)) this.buffer[id] = {};
+        this.buffer[id].delete = true;
+        this.currentTask.classList.add('delete');
+        this.card.hidden();
+    },
+    EventChange: function EventChange(e) {
+        name = e.target.name;
+        if (name === 'status') {
+            this.card.cardData[name] = e.target.checked;
+            return;
+        }
+        this.card.cardData[name] = e.target.value;
+    },
+
+
+    card: {
+        target: undefined,
+        cardData: undefined,
+        inputData: undefined,
+        init: function init() {
+            this.target = document.querySelector('.create-task');
+        },
+        show: function show(data) {
+            this.target.classList.add('d-block');
+            this.inputData = data;
+            this.cardData = Object.assign({}, data);
+            this.addData();
+        },
+        hidden: function hidden() {
+            this.cleaningCard();
+            this.target.classList.remove('d-block');
+            admin.currentTask = undefined;
+
+            if (Object.keys(admin.buffer).length) admin.showAdminMenu();
+            console.log(admin.buffer);
+        },
+        addData: function addData() {
+            var data = this.cardData;
+            this.target.querySelector('#create-task__name').value = data.name;
+            this.target.querySelector('#create-task__email').value = data.email;
+            this.target.querySelector('#create-task__task').value = data.task;
+            this.target.querySelector('#create-task__status').checked = data.status;
+        },
+        cleaningCard: function cleaningCard() {
+            this.target.querySelector('#create-task__name').value = '';
+            this.target.querySelector('#create-task__email').value = '';
+            this.target.querySelector('#create-task__task').value = '';
+            this.target.querySelector('#create-task__status').checked = false;
+
+            this.cardData = undefined;
+            this.inputData = undefined;
+        }
+    },
+    cleaningBuffer: function cleaningBuffer() {
+        this.buffer = {};
+    }
+};
+exports.default = admin;
 
 /***/ }),
 
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
+/***/ "./src/functions/pagination.js":
+/*!*************************************!*\
+  !*** ./src/functions/pagination.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _index = __webpack_require__(/*! ./index */ "./src/index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-main();
-
-function main() {
-    var filter = document.getElementById('main__filter');
-    filter.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var config = {
-            type: filter.type.value,
-            direction: filter.direction.value,
-            status: filter.status.checked,
-            admin_create: filter.admin_create.checked
-        };
-        requestTasks(config);
-    });
-
-    function requestTasks(config) {
-        config = config || {
-            type: 'undefined',
-            direction: 'on_increase',
-            status: false,
-            admin_create: false
-        };
-
-        // запрашиваю задачи с настройками фильтра
-        console.log('запрашиваем main/tasks');
-        var promise = (0, _index2.default)('/main/tasks/', config);
-        promise.then(function (tasks) {
-            insertTasks(tasks);
-        }, function (ms) {
-            console.log(ms);
-        });
-    }
-
-    function insertTasks(tasks) {
-        var n = document.querySelector('.main__tasks');
-        if (n) {
-            pagination.remove();n.parentNode.removeChild(n);
-        }
-
-        document.querySelector('.main__filter').insertAdjacentHTML('afterend', tasks);
-        pagination.add();
-        admin();
-    }
-
-    requestTasks();
-}
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var pagination = {
     target: document.querySelector('.main__pagination'),
@@ -235,7 +338,6 @@ var pagination = {
     removeEvents: function removeEvents() {
         var _this2 = this;
 
-        console.log(this.next);
         this.previous.removeEventListener('click', this.EventClickPrevious);
         this.next.removeEventListener('click', this.EventClickNext);
         this.domDigitalA = document.querySelectorAll('#digit_a').forEach(function (elm) {
@@ -310,25 +412,130 @@ var pagination = {
     }
 };
 
-function admin() {
-    if (!flagAdmin) return;
-    var buffer = {};
+exports.default = pagination;
 
-    var callbacks = {
+/***/ }),
 
-        clickTask: function clickTask(e) {},
-        clickCheckbox: function clickCheckbox(e) {},
-        saveToServer: function saveToServer(e) {},
-        cancelSaveToServer: function cancelSaveToServer(e) {},
-        save: function save(e) {},
-        cancel: function cancel(e) {}
-    };
+/***/ "./src/functions/requestToServer.js":
+/*!******************************************!*\
+  !*** ./src/functions/requestToServer.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-    var tasks = document.querySelectorAll('.task');
-    tasks.forEach(function (elm) {
-        elm.classList.add('create');
-        elm.addEventListener('click', callbacks.clickTask);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function requestToServer(url, data) {
+    var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "POST";
+    var json = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+    var promise = new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('server 200');
+                resolve(xhr.responseText);
+            } else {
+                if (xhr.readyState === 4) reject('\u0417\u0430\u043F\u0440\u043E\u0441 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043D \u0441 \u043A\u043E\u0434\u043E\u043C \u043E\u0442\u0432\u0435\u0442\u0430: ' + xhr.status);
+            }
+        };
+        console.log('--:', 'send: ', data);
+        var s = "";
+        if (!json) {
+            for (var key in data) {
+                s += key + '=' + data[key] + '&';
+            }
+            s = s.slice(0, -1);
+        } else {
+            s += 'data=' + JSON.stringify(data);
+        }
+        xhr.send(s);
     });
+    return promise;
+}
+
+exports.default = requestToServer;
+
+/***/ }),
+
+/***/ "./src/main.js":
+/*!*********************!*\
+  !*** ./src/main.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _requestToServer = __webpack_require__(/*! ./functions/requestToServer */ "./src/functions/requestToServer.js");
+
+var _requestToServer2 = _interopRequireDefault(_requestToServer);
+
+var _admin = __webpack_require__(/*! ./functions/admin */ "./src/functions/admin.js");
+
+var _admin2 = _interopRequireDefault(_admin);
+
+var _pagination = __webpack_require__(/*! ./functions/pagination */ "./src/functions/pagination.js");
+
+var _pagination2 = _interopRequireDefault(_pagination);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+main();
+
+function main() {
+    var filter = document.getElementById('main__filter');
+    filter.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var config = {
+            type: filter.type.value,
+            direction: filter.direction.value,
+            status: filter.status.checked,
+            admin_create: filter.admin_create.checked
+        };
+        requestTasks(config);
+    });
+
+    function requestTasks(config) {
+        config = config || {
+            type: 'undefined',
+            direction: 'on_increase',
+            status: false,
+            admin_create: false
+        };
+
+        // запрашиваю задачи с настройками фильтра
+        console.log('запрашиваем main/tasks');
+        var promise = (0, _requestToServer2.default)('/main/tasks/', config);
+        promise.then(function (tasks) {
+            insertTasks(tasks);
+        }, function (ms) {
+            console.log(ms);
+        });
+    }
+
+    function insertTasks(tasks) {
+        var n = document.querySelector('.main__tasks');
+        if (n) {
+            _pagination2.default.remove();_admin2.default.remove();n.parentNode.removeChild(n);
+        }
+
+        document.querySelector('.main__filter').insertAdjacentHTML('afterend', tasks);
+        _pagination2.default.add();
+        _admin2.default.add();
+    }
+
+    _admin2.default.EventCancelSaveToServer = requestTasks;
+    _admin2.default.insertTasks = insertTasks;
+    requestTasks();
 }
 
 /***/ })

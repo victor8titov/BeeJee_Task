@@ -1,4 +1,4 @@
-import requestToServer from './index';
+import requestToServer from './functions/requestToServer';
 
 function addForm() {
     const form = document.getElementById('add__form');

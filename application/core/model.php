@@ -172,7 +172,22 @@ class Model
 	protected function lastAct($id) {
 		$tm = time();   $this->write(USERS,['online'=>$tm, 'last_act'=>$tm],'id',$id); 
 	}
-
+	protected function convertForWrite($str) {
+		if ( !is_string($str) ) {
+			if (is_bool($str)) $str = $str ? "true":"false";
+		}
+		$str = htmlentities($str);
+		$str = str_replace(["\n",";"],['<br>',"\U+003B"],$str);
+		return $str;
+	}
+	protected function convertForRead($data) {
+		foreach($data as $key=>&$value) {
+			foreach($value as $task=>&$valueTask) {
+				$valueTask = str_replace(['\n',"\U+003B"],["\n",";"],$valueTask);
+			}
+		}
+		return $data;
+	}
 	protected function write($file,$write_data,$key=null,$value=null) {
 		if ( isset( $key ) && isset( $value ) && is_array( $write_data ) ) {
 			// ищу в файле секции с парой $key=$value
@@ -183,7 +198,7 @@ class Model
 					if ( $key === $sub_key ) {
 						if ( $sub_value === (string)$value) {
 							foreach ($write_data as $w_key=>$w_value) {
-								$section[$w_key] = $w_value;
+								$section[$w_key] = $this->convertForWrite ($w_value);
 							}
 						}
 						break;
@@ -192,6 +207,7 @@ class Model
 			}
 			// конвертируем в строку
 			$str = $this->arrToini($data);
+			
 
 			// записываем в файл
 			if ($str) {
@@ -214,7 +230,7 @@ class Model
 			if ( is_array($write_data) ) {
 				// формируем строку для записи
 				$str = "[". date("d.m.y-G.i.s"). "_". $this->random()."]\n";
-				foreach($write_data as $k=>$v) $str .= $k."=".$v."\n";
+				foreach($write_data as $k=>$v) $str .= $k."=".$this->convertForWrite($v)."\n";
 				$str .= "\n";
 
 				// записываем в файл строку
@@ -238,7 +254,7 @@ class Model
 	
 	protected function read($file,$key=null,$value=null) {
 		$data = parse_ini_file($file,true,INI_SCANNER_RAW);
-
+		$data = $this->convertForRead($data);
 		// чтение ключ=значени
 		if ( isset( $key ) && isset( $value ) ) {
 			$stack = [];
@@ -268,7 +284,34 @@ class Model
 		}
 			
 	}
+	protected function delete($file, $key=null, $value=null) {
+		if ( isset( $key ) && isset( $value ) ) {
+			// ищу в файле секции с парой $key=$value
+			$data = parse_ini_file($file,true,INI_SCANNER_RAW);
+			$sort=[];
+			foreach($data as $id => $task) {
+				if ($task[$key] !== $value) $sort[$id]=$task;
+			}
+			// конвертируем в строку
+			$str = $this->arrToini($sort);
+			// записываем в файл
+			
+			// перезаписываем файл
+			$f = fopen($file, "wt");
+			flock($f, LOCK_EX); // ждем, пока мы не станем единственными
+				// В этой точке мы можем быть уверены, что только эта
+				// программа работает с файлом
+				fwrite($f, $str);			
+			fflush($f); // сбрасываем буферы на диск
+			flock($f, LOCK_UN); // освобождаем файл
+			fclose($f);
 
+			return true;
+		} 
+		else {
+			return false;
+		}
+	}
 	protected function random() {
 		$length = 5;
 		static $randStr = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';

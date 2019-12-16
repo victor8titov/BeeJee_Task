@@ -1,5 +1,5 @@
 
-function requestToServer(url,data,method = "POST") {
+function requestToServer(url,data,method = "POST",json=false) {
         const promise = new Promise( (resolve, reject)=>{
             const xhr = new XMLHttpRequest();
             xhr.open(method, url, true);
@@ -15,10 +15,15 @@ function requestToServer(url,data,method = "POST") {
             };
             console.log('--:','send: ', data )
             let s = "";
-            for (let key in data) {
-                s +=`${key}=${data[key]}&`;
+            if (!json) {
+                for (let key in data) {
+                    s +=`${key}=${data[key]}&`;
+                }
+                s = s.slice(0,-1);
+            } 
+            else {
+                s+='data='+JSON.stringify(data);
             }
-            s = s.slice(0,-1);
             xhr.send(s);
         })
         return promise;

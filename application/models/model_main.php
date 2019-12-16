@@ -10,6 +10,16 @@ class Model_Main extends Model
         $tasks = $this->filtration_of_task($tasks, $filter_config);
         return $tasks;
     }
+    public function saveTo() {
+        $data = json_decode( $_POST['data']);
+        foreach ( $data as $id=>&$task) {
+            if ( array_key_exists('delete', $task) ) {
+                $this->delete(DATA,'id',$id);
+                continue;
+            }
+        } 
+        $w = $this->write(DATA, (array)$task,'id',$id);
+    }
     protected function filtration_of_task($tasks) {
         $config = [
             'type'=>        isset( $_POST['type'] ) ? $_POST['type'] : 'undefined',

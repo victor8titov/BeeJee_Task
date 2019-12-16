@@ -7028,12 +7028,14 @@ a.text-dark:hover, a.text-dark:focus {
   opacity: 0;
   transition: all 300ms ease-in-out; }
 
-.task.create {
-  transition: all 300ms ease-in-out;
-  cursor: pointer; }
-  .task.create:hover {
-    transform: scale(1.05);
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175); }
+.task {
+  position: relative; }
+  .task.create {
+    transition: all 300ms ease-in-out;
+    cursor: pointer; }
+    .task.create:hover {
+      transform: scale(1.02);
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.175); }
 
 .main__tasks {
   min-height: 350px; }
@@ -7045,5 +7047,26 @@ a.text-dark:hover, a.text-dark:focus {
 
 .o-1 {
   opacity: 1; }
+
+.delete {
+  position: relative; }
+  .delete:after {
+    position: absolute;
+    content: "Delete";
+    top: 41%;
+    left: 0;
+    width: 100%;
+    text-align: center; }
+  .delete:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    content: '';
+    background: rgba(253, 198, 198, 0.9);
+    color: black;
+    text-align: center; }
 
 /*# sourceMappingURL=logfile/main.css.map */

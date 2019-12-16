@@ -34,6 +34,10 @@
         </div>  
     </div>
 </form>
+<div class="admin-menu d-none justify-content-center mb-4">
+    <button type="button" class="btn btn-primary mx-2" id="admin-menu__button-save">Save changes</button>
+    <button type="button" class="btn btn-secondary mx-2" id="admin-menu__button-cancel">Cancel</button>
+</div>
 <nav class="main__pagination col-12 justify-content-center d-none">
   <ul class="pagination">
     <li class="page-item">
@@ -41,8 +45,6 @@
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-
-    
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Next" id="pagination__next">
         <span aria-hidden="true">&raquo;</span>

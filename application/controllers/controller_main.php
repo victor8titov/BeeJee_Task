@@ -18,12 +18,19 @@ class Controller_Main extends Controller
 	}
 	function action_tasks() {
 		
-		$data=$this->model->get_data();
-		$this->view->generate_part('tasks_view.php',$data);
+		$tasks=$this->model->get_data();
+		$login = $this->model->login();
+		$this->view->generate_part('tasks_view.php',['login'=>$login,'tasks'=>$tasks]);
 	}
 	function action_out() {
 		$this->model->out();
 		//перенаправление на главную страницу сайта 
 		header('Location: http://'.$_SERVER['HTTP_HOST'].'/'); 
+	}
+	function action_savetoserver() {
+		$this->model->saveTo();
+		$tasks=$this->model->get_data();
+		$login = $this->model->login();
+		$this->view->generate_part('tasks_view.php',['login'=>$login,'tasks'=>$tasks]);
 	}
 }
