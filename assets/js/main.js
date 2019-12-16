@@ -120,7 +120,6 @@ var admin = {
             return elm.addEventListener('click', _this.EventClickTask);
         });
     },
-    // end add();
     remove: function remove() {
         var _this2 = this;
 
@@ -152,7 +151,6 @@ var admin = {
         this.EventChange = this.EventChange.bind(this);
         this.EventDeleteTask = this.EventDeleteTask.bind(this);
         this.EventSaveToServer = this.EventSaveToServer.bind(this);
-        //this.EventCancelSaveToServer = this.EventCancelSaveToServer.bind(this);
 
         this.card.target.querySelector('#create-task__button-cancel').addEventListener('click', this.EventCancel);
         this.card.target.querySelector('#create-task__button-save').addEventListener('click', this.EventSave);
@@ -274,6 +272,7 @@ var admin = {
             this.inputData = undefined;
         }
     },
+
     cleaningBuffer: function cleaningBuffer() {
         this.buffer = {};
     }

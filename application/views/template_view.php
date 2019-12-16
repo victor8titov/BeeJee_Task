@@ -26,6 +26,9 @@
 			<?php if ($namePage === '' ) : ?>
 				<a href="/add" type="button" class="btn btn-light float-right mx-1 btn-sm ">Add</a>
 			<?php endif; ?>
+			<?php if ($namePage !== '' ) : ?>
+				<a href="/" type="button" class="btn btn-light float-right mx-1 btn-sm ">Main</a>
+			<?php endif; ?>
 		</div>
 	</header>
 	

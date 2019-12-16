@@ -1,6 +1,5 @@
 import requestToServer from './functions/requestToServer';
 
-
 function authorization() {
     const form = document.getElementById('authorization__form');
     form.addEventListener('submit',(e)=>{
@@ -25,11 +24,9 @@ function authorization() {
                 DomMessage_authorization('Ошибка при передачи данных на сервер!',ms,'alert-danger');
             }
         )
-
     });
 
-
-    const DomMessage_authorization = (title,description=undefined,className) => {
+    function DomMessage_authorization (title,description=undefined,className) {
         const block_message = document.querySelector('.authorization__message');
         
         block_message.classList.add(className);
@@ -38,12 +35,10 @@ function authorization() {
         block_message.querySelector('.authorization__title').innerHTML = title;
         if (description !== undefined) block_message.querySelector('.authorization__description').innerHTML = description;
 
-
         setTimeout(()=>{
             block_message.classList.remove('o-1');
         },4000)
     }
 }
-
 
 authorization();

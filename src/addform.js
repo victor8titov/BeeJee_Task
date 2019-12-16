@@ -1,5 +1,7 @@
 import requestToServer from './functions/requestToServer';
 
+addForm();
+
 function addForm() {
     const form = document.getElementById('add__form');
     form.addEventListener('submit',(e)=>{
@@ -24,7 +26,6 @@ function addForm() {
                 DomMessage('Ошибка при передачи данных на сервер!',ms,'alert-danger');
             }
         )
-
     });
 
     const DomMessage = (title,description=undefined,className) => {
@@ -41,7 +42,3 @@ function addForm() {
         },10000)
     }
 }
-
-
-    addForm();
-

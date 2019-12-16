@@ -10,25 +10,30 @@ const admin = {
         
         document.querySelectorAll('.task').forEach((elm)=>elm.addEventListener('click',this.EventClickTask));
         
-    }, // end add();
+    }, 
+
     remove() {
         document.querySelectorAll('.task').forEach((elm)=>elm.removeEventListener('click',this.EventClickTask));
         this.hiddenAdminMenu();
     },
+
     init() {
         this.card.init();
         this.addEvents();
     },
+
     showAdminMenu() {
         const classList = document.querySelector('.admin-menu').classList;
         classList.remove('d-none');
         classList.add('d-flex');
     },
+
     hiddenAdminMenu() {
         const classList = document.querySelector('.admin-menu').classList;
         classList.remove('d-flex');
         classList.add('d-none');
     },
+
     addEvents() {
         this.EventClickTask = this.EventClickTask.bind(this);
         this.EventCancel = this.EventCancel.bind(this);
@@ -36,7 +41,6 @@ const admin = {
         this.EventChange = this.EventChange.bind(this);
         this.EventDeleteTask = this.EventDeleteTask.bind(this);
         this.EventSaveToServer = this.EventSaveToServer.bind(this);
-        //this.EventCancelSaveToServer = this.EventCancelSaveToServer.bind(this);
 
         this.card.target.querySelector('#create-task__button-cancel').addEventListener('click',this.EventCancel);
         this.card.target.querySelector('#create-task__button-save').addEventListener('click',this.EventSave);
@@ -46,6 +50,7 @@ const admin = {
         document.querySelector('#admin-menu__button-save').addEventListener('click',this.EventSaveToServer);
         document.querySelector('#admin-menu__button-cancel').addEventListener('click',this.EventCancelSaveToServer);
     },
+
     EventClickTask(e) {
             this.currentTask = e.currentTarget;
             const regExp = /Выполнено/;
@@ -59,6 +64,7 @@ const admin = {
             };
             this.card.show(data);
     },
+
     EventSaveToServer (e) {
         const promise = requestToServer('/main/savetoserver/',this.buffer,'post',true);
         promise.then(
@@ -70,6 +76,7 @@ const admin = {
             }
         )
     },
+
     EventCancelSaveToServer (e) {},
     EventSave (e) {
         const id = this.card.cardData.id;
@@ -100,9 +107,11 @@ const admin = {
         }
         this.card.hidden();
     },
+
     EventCancel (e) {
         this.card.hidden();
     },
+
     EventDeleteTask (e) {
         const id = this.card.cardData.id;
         if (!this.buffer.hasOwnProperty(id) ) this.buffer[id]={};
@@ -111,6 +120,7 @@ const admin = {
         this.card.hidden();
         
     },
+
     EventChange (e) {
         name = e.target.name;
         if (name === 'status') {
@@ -119,7 +129,7 @@ const admin = {
         }
         this.card.cardData[name] = e.target.value;
     },
-    
+
     card: {
         target: undefined,
         cardData: undefined,
@@ -157,14 +167,9 @@ const admin = {
             this.inputData = undefined;
         }
     },
+    
     cleaningBuffer() {
         this.buffer = {};
     }
-
-    
-
-
-
-
 }
 export default admin;

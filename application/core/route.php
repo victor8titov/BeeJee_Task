@@ -18,7 +18,6 @@ class Route
 		
 		$routes = Route::parsingURI();
 		
-		
 		// получаем имя контроллера
 		if ( !empty($routes[1]) )
 		{	
@@ -36,15 +35,7 @@ class Route
 		$controller_name = 'Controller_'.$controller_name;
 		$action_name = 'action_'.$action_name;
 
-		/* print_r($routes);
-		echo '<br>';
-		echo "Model: $model_name <br>";
-		echo "Controller: $controller_name <br>";
-		echo "Action: $action_name <br>";
-		
- */
 		// подцепляем файл с классом модели (файла модели может и не быть)
-
 		$model_file = strtolower($model_name).'.php';
 		$model_path = "application/models/".$model_file;
 		if(file_exists($model_path))
@@ -61,10 +52,6 @@ class Route
 		}
 		else
 		{
-			/*
-			правильно было бы кинуть здесь исключение,
-			но для упрощения сразу сделаем редирект на страницу 404
-			*/
 			Route::ErrorPage404();
 		}
 		
@@ -79,7 +66,6 @@ class Route
 		}
 		else
 		{
-			// здесь также разумнее было бы кинуть исключение
 			Route::ErrorPage404();
 		}
 	

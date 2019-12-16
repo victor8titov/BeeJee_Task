@@ -125,7 +125,7 @@ function authorization() {
         });
     });
 
-    var DomMessage_authorization = function DomMessage_authorization(title) {
+    function DomMessage_authorization(title) {
         var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
         var className = arguments[2];
 
@@ -140,7 +140,7 @@ function authorization() {
         setTimeout(function () {
             block_message.classList.remove('o-1');
         }, 4000);
-    };
+    }
 }
 
 authorization();

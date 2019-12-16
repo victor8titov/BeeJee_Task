@@ -50,11 +50,6 @@ function main() {
     admin.EventCancelSaveToServer = requestTasks;
     admin.insertTasks = insertTasks;
     requestTasks();
-
-    
-    
-    
-    
 }
 
 

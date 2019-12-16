@@ -18,15 +18,15 @@ const pagination =  {
         this.target.classList.remove('d-none');
         this.target.classList.add('d-flex');
     },
+    
     remove(){
         this.removeEvents();
         this.removeDigitalLine();
         this.target.classList.remove('d-flex');
         this.target.classList.add('d-none');
         this.currentList = 1;
-        
     },
-  
+
     addEvents() {
         this.EventClickPrevious = this.EventClickPrevious.bind(this);
         this.EventClickNext = this.EventClickNext.bind(this);
@@ -36,13 +36,13 @@ const pagination =  {
         this.next.addEventListener('click',this.EventClickNext);
         this.domDigitalA = document.querySelectorAll('#digit_a').forEach((elm)=>elm.addEventListener('click',this.EventClickDigit));
     },
-  
+
     removeEvents() {
         this.previous.removeEventListener('click',this.EventClickPrevious);
         this.next.removeEventListener('click',this.EventClickNext);
         this.domDigitalA = document.querySelectorAll('#digit_a').forEach((elm)=>elm.removeEventListener('click',this.EventClickDigit));
     },
-  
+
     generateDigitLine() {
         for (let i=1; i<=this.countList; i++) {
             let li = document.createElement('li');
@@ -71,8 +71,8 @@ const pagination =  {
         --this.currentList;
         this.showCurrentListTasks();
         this.instActiveClass();
-        
     },
+
     EventClickNext(e){
         e.preventDefault();
         if (this.currentList >= this.countList) return;

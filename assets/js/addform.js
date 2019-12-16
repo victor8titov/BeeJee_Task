@@ -102,6 +102,8 @@ var _requestToServer2 = _interopRequireDefault(_requestToServer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+addForm();
+
 function addForm() {
     var form = document.getElementById('add__form');
     form.addEventListener('submit', function (e) {
@@ -142,8 +144,6 @@ function addForm() {
         }, 10000);
     };
 }
-
-addForm();
 
 /***/ }),
 
