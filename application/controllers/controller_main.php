@@ -9,10 +9,6 @@ class Controller_Main extends Controller
 
 	function action_index()
 	{	
-		//$this->model->createUser('admin','123');
-		//ms($this->model->login());
-		//ms($_SESSION['id']);
-		//ms($_COOKIE);
 		$login = $this->model->login();
 		$this->view->generate('main_view.php', 'template_view.php',['login'=>$login]);
 	}
@@ -28,9 +24,15 @@ class Controller_Main extends Controller
 		header('Location: http://'.$_SERVER['HTTP_HOST'].'/'); 
 	}
 	function action_savetoserver() {
-		$this->model->saveTo();
-		$tasks=$this->model->get_data();
 		$login = $this->model->login();
-		$this->view->generate_part('tasks_view.php',['login'=>$login,'tasks'=>$tasks]);
+		if ($login) {
+			$this->model->saveTo();
+			$tasks=$this->model->get_data();
+			$this->view->generate_part('tasks_view.php',['tasks'=>$tasks]);
+		}
+		else {
+			$this->view->generate_part('taskerror_view.php');
+		}
+		
 	}
 }

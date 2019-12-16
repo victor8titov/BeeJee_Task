@@ -114,13 +114,13 @@ function addForm() {
             admincreate: 'false'
         };
         // Отправка формы на сервер 
-        var request = (0, _requestToServer2.default)('/addform', data, 'POST');
+        var request = (0, _requestToServer2.default)('/add/addtask', data, 'POST');
         request.then(function (ms) {
-            console.log('good request', ms);
+            console.log(ms);
             DomMessage(ms, null, 'alert-primary');
             e.target.reset();
         }, function (ms) {
-            console.log('bad request ', ms);
+            console.log(ms);
             DomMessage('Ошибка при передачи данных на сервер!', ms, 'alert-danger');
         });
     });
@@ -129,18 +129,17 @@ function addForm() {
         var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
         var className = arguments[2];
 
-        //console.log(document.querySelector('.add__message'))
-        var block_message = document.querySelector('.add__message');
+        var block_message = document.querySelector('.add-message');
 
         block_message.classList.add(className);
         block_message.classList.add('o-1');
 
-        block_message.querySelector('.add__title').innerHTML = title;
-        if (description !== undefined) block_message.querySelector('.add__description').innerHTML = description;
+        block_message.querySelector('.add-message__title').innerHTML = title;
+        if (description !== undefined) block_message.querySelector('.add-message__description').innerHTML = description;
 
         setTimeout(function () {
             block_message.classList.remove('o-1');
-        }, 4000);
+        }, 10000);
     };
 }
 

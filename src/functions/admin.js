@@ -94,7 +94,7 @@ const admin = {
                     this.currentTask.querySelector('.task__status').innerHTML = `<span class="font-weight-bold ">Статус: </span>${ms}</p>`
                 }
 
-                this.buffer[id].admin_create = true;
+                if ( this.buffer[id].hasOwnProperty('task') )  this.buffer[id].admin_create = true;
                 
             }
         }

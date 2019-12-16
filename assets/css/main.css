@@ -7024,12 +7024,25 @@ a.text-dark:hover, a.text-dark:focus {
   opacity: 0;
   transition: all 300ms ease-in-out; }
 
-.add__message {
+@media (min-width: 768px) {
+  .add-form {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto; } }
+
+.add-message {
   opacity: 0;
   transition: all 300ms ease-in-out; }
+  @media (max-width: 576px) {
+    .add-message__title {
+      font-size: 1rem; } }
 
 .task {
-  position: relative; }
+  position: relative;
+  width: 100%; }
+  @media (min-width: 768px) {
+    .task {
+      width: 30%; } }
   .task.create {
     transition: all 300ms ease-in-out;
     cursor: pointer; }

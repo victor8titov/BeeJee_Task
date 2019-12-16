@@ -1,6 +1,6 @@
 <?php
 
-class Model_Addform extends Model
+class Model_Add extends Model
 {
 	public function set_data() {
 		if ( 	isset( $_POST['name'] ) && 

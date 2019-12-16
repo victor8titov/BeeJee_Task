@@ -12,36 +12,33 @@ function addForm() {
             admincreate: 'false'
         };
         // Отправка формы на сервер 
-        const request = requestToServer('/addform',data,'POST');
+        const request = requestToServer('/add/addtask',data,'POST');
         request.then(
             (ms)=>{
-                console.log('good request',ms)
+                console.log(ms);
                 DomMessage(ms,null,'alert-primary');
                 e.target.reset();
             },
             (ms)=>{
-                console.log('bad request ', ms)
+                console.log(ms);
                 DomMessage('Ошибка при передачи данных на сервер!',ms,'alert-danger');
             }
         )
 
     });
 
-
     const DomMessage = (title,description=undefined,className) => {
-        //console.log(document.querySelector('.add__message'))
-        const block_message = document.querySelector('.add__message');
+        const block_message = document.querySelector('.add-message');
         
         block_message.classList.add(className);
         block_message.classList.add('o-1');
 
-        block_message.querySelector('.add__title').innerHTML = title;
-        if (description !== undefined) block_message.querySelector('.add__description').innerHTML = description;
-
+        block_message.querySelector('.add-message__title').innerHTML = title;
+        if (description !== undefined) block_message.querySelector('.add-message__description').innerHTML = description;
 
         setTimeout(()=>{
             block_message.classList.remove('o-1');
-        },4000)
+        },10000)
     }
 }
 

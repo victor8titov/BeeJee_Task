@@ -172,6 +172,7 @@ class Model
 	protected function lastAct($id) {
 		$tm = time();   $this->write(USERS,['online'=>$tm, 'last_act'=>$tm],'id',$id); 
 	}
+	
 	protected function convertForWrite($str) {
 		if ( !is_string($str) ) {
 			if (is_bool($str)) $str = $str ? "true":"false";
@@ -180,6 +181,7 @@ class Model
 		$str = str_replace(["\n",";"],['<br>',"\U+003B"],$str);
 		return $str;
 	}
+	
 	protected function convertForRead($data) {
 		foreach($data as $key=>&$value) {
 			foreach($value as $task=>&$valueTask) {
@@ -188,6 +190,7 @@ class Model
 		}
 		return $data;
 	}
+	
 	protected function write($file,$write_data,$key=null,$value=null) {
 		if ( isset( $key ) && isset( $value ) && is_array( $write_data ) ) {
 			// ищу в файле секции с парой $key=$value
@@ -284,6 +287,7 @@ class Model
 		}
 			
 	}
+	
 	protected function delete($file, $key=null, $value=null) {
 		if ( isset( $key ) && isset( $value ) ) {
 			// ищу в файле секции с парой $key=$value
@@ -312,6 +316,7 @@ class Model
 			return false;
 		}
 	}
+	
 	protected function random() {
 		$length = 5;
 		static $randStr = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -337,6 +342,4 @@ class Model
 		}
 		return false;
 	}
-
-	
 }

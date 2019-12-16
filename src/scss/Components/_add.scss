@@ -1,4 +1,16 @@
-.add__message {
+.add-form {
+    @media(min-width: 768px) {
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.add-message {
     opacity: 0;
     transition: all 300ms ease-in-out;
+    &__title {
+        @media(max-width: 576px) {
+            font-size: 1rem;
+        }
+    }
 }

@@ -1,4 +1,13 @@
-<form class="pt-5" id="add__form" name="add__form" action="/addform" method="POST">
+<?php if ( array_key_exists('flag',$data) ): ?>
+    <?php if ($data['flag']) {
+            echo "Заметка успешно добавлена!";
+        }
+        else {
+            echo "Не была добавлена!";
+        }
+    ?>
+<? else: ?>
+<form class="pt-5 add-form" id="add__form" name="add__form" action="/addform" method="POST">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
@@ -25,11 +34,13 @@
         </div>
   </div>
 </form>
-<div class="alert add__message" role="alert" >
-  <h4 class="alert-heading add__title"></h4>
-  <p class="add__description"></p>
+<div class="alert add-message" role="alert" >
+  <h4 class="alert-heading add-message__title"></h4>
+  <p class="add-message__description"></p>
   <hr>
   <a href="/" type="button" class="btn btn-light mx-1 btn-sm">Вернуться к заметкам</a>
 </div>
 <script src="assets/js/addform.js" defer ></script>
+<? endif;?>
+
 

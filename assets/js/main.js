@@ -211,7 +211,7 @@ var admin = {
                     this.currentTask.querySelector('.task__status').innerHTML = '<span class="font-weight-bold ">\u0421\u0442\u0430\u0442\u0443\u0441: </span>' + ms + '</p>';
                 }
 
-                this.buffer[id].admin_create = true;
+                if (this.buffer[id].hasOwnProperty('task')) this.buffer[id].admin_create = true;
             }
         }
         this.card.hidden();
